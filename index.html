@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMI Calculator</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url('https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            font-family: sans-serif;
+        }
+
+        .calculator-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(15px);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            width: 350px;
+            text-align: center;
+        }
+
+        h2 { color: #005691; margin-bottom: 20px; }
+
+        .input-group { text-align: left; margin-bottom: 15px; }
+
+        label { display: block; font-size: 0.9rem; margin-bottom: 5px; color: #333; }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #0073bc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .results-box {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(0, 115, 188, 0.1);
+            border-radius: 8px;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        .highlight { font-weight: bold; color: #005691; }
+    </style>
+</head>
+<body>
+
+<div class="calculator-card">
+    <h2>Financial Loan EMI Calculator</h2>
+    
+    <div class="input-group">
+        <label>Loan Amount (₹)</label>
+        <input type="number" id="amount" placeholder="e.g. 500000">
+    </div>
+
+    <div class="input-group">
+        <label>Annual Interest Rate (%)</label>
+        <input type="number" id="interest" step="0.01" placeholder="e.g. 7.25">
+    </div>
+
+    <div class="input-group">
+        <label>Tenure (Months)</label>
+        <input type="number" id="tenure" placeholder="e.g. 36">
+    </div>
+
+    <button id="calculate-btn">Calculate Monthly EMI</button>
+
+    <div class="results-box">
+        <p>Your Monthly Installment: <span class="highlight" id="emi-display">₹ 0</span></p>
+        <p>Total Interest: <span id="total-interest">₹ 0</span></p>
+        <p>Total Payment: <span id="total-payment">₹ 0</span></p>
+    </div>
+</div>
+
+<script>
+    const btn = document.getElementById('calculate-btn');
+    
+    btn.addEventListener('click', () => {
+        // We need to pull the values from the inputs here
+        const P = parseFloat(document.getElementById('amount').value);
+        const annualRate = parseFloat(document.getElementById('interest').value);
+        const n = parseFloat(document.getElementById('tenure').value);
+
+        // Let's calculate the monthly rate (r)
+        // If the annual rate is 12%, we divide by 12 months and 100
+        const r = annualRate / 12 / 100;
+
+        // EMI Formula: P * r * (1 + r)^n / ((1 + r)^n - 1)
+        const emi = P * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+        
+        // Now we need to calculate the Total Payment and Total Interest
+        // Total Payment = emi * n
+        // Total Interest = Total Payment - P
+        
+        // Displaying the result (rounded to 2 decimal places)
+        document.getElementById('emi-display').innerText = "₹ " + emi.toFixed(2);
+    });
+</script>
+
+</body>
+</html>
